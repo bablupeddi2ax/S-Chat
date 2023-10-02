@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <!-- set android:layout_alignParentEnd="true" because this is sent message-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="5dp"
+        >
+
+        <ImageView
+            android:id="@+id/imgReceive"
+            android:layout_width="250dp"
+            android:layout_height="170dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="157dp"
+            android:src="@drawable/ic_launcher_background"
+            android:text="This is sent Message" />
+
+        <TextView
+            android:id="@+id/captionReceive"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/imgReceive"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="153dp"
+            android:layout_marginBottom="0dp"
+            android:text="caption"
+            android:textSize="25dp" />
+    </RelativeLayout>
+</RelativeLayout>
+

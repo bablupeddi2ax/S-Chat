@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">SImpleChat</string>
+    <string name="password">passsword</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="signup">Signup</string>
+    <string name="name">Name</string>
+    <string name="type_username_to_search">type username to search</string>
+    <string name="msg_token_fmt">token</string>
+    <string name="anonymous_login">Anonymous Login</string>
+    <string name="select_image">Select Image</string>
+    <string name="select_or_upload_your_profile_picture">Select or upload your profile picture</string>
+</resources>
