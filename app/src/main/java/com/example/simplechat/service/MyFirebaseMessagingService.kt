@@ -1,4 +1,4 @@
-package com.example.simplechat.Service
+package com.example.simplechat.service
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent

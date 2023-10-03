@@ -2,7 +2,7 @@ package com.example.simplechat.models
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.simplechat.Service.FirebaseAuthService
+import com.example.simplechat.service.FirebaseAuthService
 import com.example.simplechat.utils.ValidationResult
 
 class LoginViewModel : ViewModel() {

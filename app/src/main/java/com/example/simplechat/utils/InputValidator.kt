@@ -1,5 +1,7 @@
 package com.example.simplechat.utils
 
+import android.content.Context
+
 //regex are used instead of if else statements
 
 // email validation through regex
@@ -31,7 +33,34 @@ fun validatePassword(password: String): ValidationResult {
         ValidationResult.Error("Invalid password")
     }
 }
+ fun validateInputs(context: Context,name: String, emailValidation: ValidationResult, passwordValidation: ValidationResult): Boolean {
+    // Validate Name
+    val utils = Utils()
+    if (name.isEmpty()) {
+        utils.showToast("Please enter your name.",context)
+        return false
+    }
 
+    // Validate Email
+    when (emailValidation) {
+        is ValidationResult.Success -> { }
+        is ValidationResult.Error -> {
+            utils.showToast(emailValidation.message,context)
+            return false
+        }
+    }
+
+    // Validate Password
+    when (passwordValidation) {
+        is ValidationResult.Success -> { }
+        is ValidationResult.Error -> {
+            utils.showToast(passwordValidation.message,context)
+            return false
+        }
+    }
+
+    return true
+}
 
 
 /*

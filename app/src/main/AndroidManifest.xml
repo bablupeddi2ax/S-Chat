@@ -58,7 +58,7 @@
             android:exported="false">
         </activity>
         <service
-            android:name=".Service.MyFirebaseMessagingService"
+            android:name=".service.MyFirebaseMessagingService"
             android:exported="false"
             android:stopWithTask="false">
             <intent-filter>
