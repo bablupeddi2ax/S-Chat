@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
             // Handle the data from the notification here
             mAuth = FirebaseAuth.getInstance()
             val mdbRef = FirebaseDatabase.getInstance().getReference("users")
-           val userId = intent.extras?.getString("userId")
+            val userId = intent.extras?.getString("userId")
             mdbRef.addValueEventListener(object: ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for(userSnapShot in snapshot.children){
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                   Toast.makeText(this@MainActivity, "Something happend$error",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "Something happend$error",Toast.LENGTH_SHORT).show()
                 }
             })
 
@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
 
 
 
-private fun createImageSelectionDialog(): AlertDialog {
+    private fun createImageSelectionDialog(): AlertDialog {
         val dialogView = layoutInflater.inflate(R.layout.profile_picture_dialog, null)
         imgDialog = dialogView.findViewById(R.id.selectImageDialogView)
         selectImageDialogButton = dialogView.findViewById(R.id.selectImageDialogButton)

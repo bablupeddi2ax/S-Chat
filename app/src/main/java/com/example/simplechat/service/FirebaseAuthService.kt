@@ -1,13 +1,12 @@
-@file:JvmName("FirebaseAuthService")
+//@file:JvmName("FirebaseAuthService")
+
 package com.example.simplechat.service
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 
-
 class FirebaseAuthService : AuthService {
     private val mAuth = FirebaseAuth.getInstance()
-
     override fun signInWithEmailAndPassword(
         email: String,
         password: String,
@@ -18,7 +17,6 @@ class FirebaseAuthService : AuthService {
                 callback(task.isSuccessful)
             }
     }
-
     override fun signUpWithEmailAndPasswordWithFCMToken(
         name: String,
         email: String,
@@ -29,14 +27,14 @@ class FirebaseAuthService : AuthService {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val user = mAuth.currentUser
-                    var token :String
+                    var token: String
                     if (user != null) {
                         FirebaseMessaging.getInstance().token.addOnSuccessListener { fcmToken ->
                             if (fcmToken.isNotBlank() && !fcmToken.isNullOrBlank()) {
                                 token = fcmToken
                                 val fdb = FirebaseDatabaseService()
                                 user.uid.let { uid ->
-                                    fdb.addUserToDatabase(name, email, uid, token) { success ->
+                                    fdb.addUserToDatabase(name, email, uid, token) { success:Boolean ->
                                         callback(success) // Callback with success status
                                     }
                                 }

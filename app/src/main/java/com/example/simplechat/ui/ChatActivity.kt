@@ -1,11 +1,16 @@
 package com.example.simplechat.ui
 
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simplechat.R
@@ -69,7 +74,9 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var imageSendButton:ImageButton
     private lateinit var receiverUid :String
     private lateinit var senderUid:String
-    val REQUEST_CODE_SNAP_ACTIVITY = 100
+    private val REQUEST_CODE_SNAP_ACTIVITY = 100
+
+    private val token ="AAAAsb871t4:APA91bHoXymE3ZfFWqbuYJW2SQlH6Ll-wMyJ0c0Qch6CrIcMhirU0cq3_4J0TThwQ4kgWMyjaYM9QHMcHCF0D2ukLUo2XGr-49gvb68FNHQxs_LYWYjXpBlHlssqaoUfUgJXSAHnvlDm"
     private fun sendNotification(message: String) {
         // current username, message, currentUserId, other user token
         val curUid = FirebaseAuth.getInstance().currentUser?.uid
@@ -145,7 +152,7 @@ class ChatActivity : AppCompatActivity() {
             val request = Request.Builder()
                 .url(url)
                 .post(body)
-                .header(name = "Authorization","Bearer AAAAsb871t4:APA91bHoXymE3ZfFWqbuYJW2SQlH6Ll-wMyJ0c0Qch6CrIcMhirU0cq3_4J0TThwQ4kgWMyjaYM9QHMcHCF0D2ukLUo2XGr-49gvb68FNHQxs_LYWYjXpBlHlssqaoUfUgJXSAHnvlDm")
+                .header(name = "Authorization","Bearer $token")
                 .build()
             client.newCall(request).enqueue(object :Callback{
                 override fun onFailure(call: Call, e: IOException) {
@@ -163,6 +170,9 @@ class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+        // Check if the activity was launched from a notification
+
+
 
         // Retrieve user details and initialize Firebase references
          val name = intent.getStringExtra("name")
@@ -191,7 +201,33 @@ class ChatActivity : AppCompatActivity() {
         // Configure the RecyclerView for displaying messages
         chatRecyclerView.layoutManager = LinearLayoutManager(this)
         chatRecyclerView.adapter = messageAdapter
+        val broadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent?.action == "NEW_MESSAGE_RECEIVED") {
+                    // Reload the chat messages here
+                    mRef.child("chats").child(senderRoom!!).child("messages")
+                        .addValueEventListener(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                // avoid duplication by clearing messages that are already there in the list
+                                messageList.clear()
+                                for (postSnapshot in snapshot.children) {
+                                    val message = postSnapshot.getValue(Message::class.java)
+                                    messageList.add(message!!)
+                                }
+                                Toast.makeText(this@ChatActivity,"Broadacast",Toast.LENGTH_SHORT).show()
+                                //notify data set changed
+                                messageAdapter.notifyDataSetChanged()
+                            }
 
+                            override fun onCancelled(error: DatabaseError) {
+                                utils.showToast(error.message, this@ChatActivity)
+                            }
+                        })
+
+                }
+            }
+        }
+        LocalBroadcastManager.getInstance(this@ChatActivity).registerReceiver(broadcastReceiver, IntentFilter("NEW_MESSAGE_RECEIVED"))
         // Retrieve and display chat messages in real-time
         mRef.child("chats").child(senderRoom!!).child("messages")
             .addValueEventListener(object : ValueEventListener {

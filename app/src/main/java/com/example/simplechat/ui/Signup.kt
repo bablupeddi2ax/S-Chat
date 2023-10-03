@@ -7,8 +7,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.simplechat.R
-
-import com.example.simplechat.service.FirebaseDatabaseService
 import com.example.simplechat.utils.Utils
 import com.example.simplechat.utils.validateEmail
 import com.example.simplechat.utils.validateInputs
@@ -46,7 +44,6 @@ class Signup : AppCompatActivity() {
     private lateinit var mDbRef:DatabaseReference
     private lateinit var utils: Utils
     private lateinit var mAuthService: FirebaseAuthService
-    private lateinit var mDbService: FirebaseDatabaseService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +63,6 @@ class Signup : AppCompatActivity() {
         mDbRef = FirebaseDatabase.getInstance().reference
 
         mAuthService = FirebaseAuthService()
-        mDbService = FirebaseDatabaseService()
-
 
         utils = Utils()
         // set on click listener for signup button
@@ -86,12 +81,14 @@ class Signup : AppCompatActivity() {
                 signup(name,email, password)
             }
         }
-
     }
-
     // Handle user registration
     private fun signup(name: String, email: String, password: String) {
-        mAuthService.signUpWithEmailAndPasswordWithFCMToken(name, email, password) { success:Boolean ->
+        mAuthService.signUpWithEmailAndPasswordWithFCMToken(
+            name,
+            email,
+            password
+        ) { success: Boolean ->
             if (success) {
                 // navigate to MainActivity
                 utils.moveTo(this@Signup, MainActivity::class.java)
@@ -105,10 +102,6 @@ class Signup : AppCompatActivity() {
             }
         }
     }
-
-
-    // Validates user inputs
-
 }
 
 

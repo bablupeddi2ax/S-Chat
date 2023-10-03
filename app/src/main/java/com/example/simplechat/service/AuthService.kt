@@ -1,5 +1,6 @@
-@file:JvmName("AuthService")
+//@file:JvmName("AuthService")
 package com.example.simplechat.service
+
 
 interface AuthService {
     fun signInWithEmailAndPassword(email: String, password: String, callback: (Boolean) -> Unit)

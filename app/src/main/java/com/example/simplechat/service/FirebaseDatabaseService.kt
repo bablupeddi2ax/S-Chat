@@ -1,6 +1,7 @@
 @file:JvmName("FirebaseAuthService")
 package com.example.simplechat.service
 
+
 import com.example.simplechat.models.User
 import com.google.firebase.database.FirebaseDatabase
 
