@@ -4,6 +4,7 @@ import UserAdapter
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -37,6 +38,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import android.Manifest
 
 class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
 
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
     private lateinit var selectImageDialogButton: Button
     private lateinit var getContent: ActivityResultLauncher<String>
 
-
+    val REQUEST_CODE_GALLERY_PERMISSION = 100
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -102,6 +104,7 @@ class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
             if (uri != null) {
                 imageUri = uri
                 uploadImage(imageUri)
+                createImageSelectionDialog()
                 imgDialog.setImageURI(imageUri)
             }
         }
@@ -129,6 +132,7 @@ class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
             .get()
             .addOnSuccessListener { documentSnapshot ->
                 if (!documentSnapshot.exists()) {
+                    checkGalleryPermission()
                     navigateToSetProfile()
                 }
             }
@@ -147,7 +151,30 @@ class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
 
 
 
+    private fun checkGalleryPermission() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        getContent.launch("image/*")
 
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_GALLERY_PERMISSION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, launch SetProfileActivity
+                navigateToSetProfile()
+            } else {
+                // Permission denied, you can show a message to the user or handle it accordingly
+                Toast.makeText(this, "Gallery access permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
 
     private fun createImageSelectionDialog(): AlertDialog {
@@ -286,6 +313,12 @@ class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
         // Handle the result here
     }
 
+    @Deprecated("Deprecated in Java", ReplaceWith(
+        "Toast.makeText(this, \"Back button is disabled in this screen.\", Toast.LENGTH_SHORT).show()",
+        "android.widget.Toast",
+        "android.widget.Toast"
+    )
+    )
     override fun onBackPressed() {
         Toast.makeText(this, "Back button is disabled in this screen.", Toast.LENGTH_SHORT).show()
     }

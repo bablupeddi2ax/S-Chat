@@ -148,7 +148,6 @@ class Login : AppCompatActivity() {
                 }
             )
         }
-
     }
 
     private fun generateRandomUserName(length: Int): String {

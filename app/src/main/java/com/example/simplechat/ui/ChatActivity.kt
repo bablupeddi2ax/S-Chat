@@ -1,23 +1,19 @@
 package com.example.simplechat.ui
 
 import android.app.Activity
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simplechat.R
-import com.example.simplechat.utils.Utils
 import com.example.simplechat.adapters.MessageAdapter
 import com.example.simplechat.models.Message
 import com.example.simplechat.models.User
+import com.example.simplechat.utils.Utils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -118,6 +114,7 @@ class ChatActivity : AppCompatActivity() {
                                             // Send the notification using Firebase Cloud Messaging
                                             // You should implement this part to send the notification
                                             // using an HTTP POST request to the FCM server.
+
                                             callApi(jsonObject)
                                         } catch (e: Exception) {
                                             // Handle any exceptions
@@ -141,9 +138,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun callApi(jsonObject: JSONObject) {
-
         val JSON = "application/json".toMediaType()
-
         val client = OkHttpClient()
 
 
@@ -156,24 +151,19 @@ class ChatActivity : AppCompatActivity() {
                 .build()
             client.newCall(request).enqueue(object :Callback{
                 override fun onFailure(call: Call, e: IOException) {
-
+                    Log.i("HttpFailure",e.message.toString())
+                    Log.i("HttpFailure",call.request().toString())
                 }
-
                 override fun onResponse(call: Call, response: Response) {
-
+                response.body?.close()
                 }
             })
-
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
         // Check if the activity was launched from a notification
-
-
-
         // Retrieve user details and initialize Firebase references
          val name = intent.getStringExtra("name")
          receiverUid = intent.getStringExtra("uid").toString()
@@ -201,33 +191,7 @@ class ChatActivity : AppCompatActivity() {
         // Configure the RecyclerView for displaying messages
         chatRecyclerView.layoutManager = LinearLayoutManager(this)
         chatRecyclerView.adapter = messageAdapter
-        val broadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                if (intent?.action == "NEW_MESSAGE_RECEIVED") {
-                    // Reload the chat messages here
-                    mRef.child("chats").child(senderRoom!!).child("messages")
-                        .addValueEventListener(object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                // avoid duplication by clearing messages that are already there in the list
-                                messageList.clear()
-                                for (postSnapshot in snapshot.children) {
-                                    val message = postSnapshot.getValue(Message::class.java)
-                                    messageList.add(message!!)
-                                }
-                                Toast.makeText(this@ChatActivity,"Broadacast",Toast.LENGTH_SHORT).show()
-                                //notify data set changed
-                                messageAdapter.notifyDataSetChanged()
-                            }
 
-                            override fun onCancelled(error: DatabaseError) {
-                                utils.showToast(error.message, this@ChatActivity)
-                            }
-                        })
-
-                }
-            }
-        }
-        LocalBroadcastManager.getInstance(this@ChatActivity).registerReceiver(broadcastReceiver, IntentFilter("NEW_MESSAGE_RECEIVED"))
         // Retrieve and display chat messages in real-time
         mRef.child("chats").child(senderRoom!!).child("messages")
             .addValueEventListener(object : ValueEventListener {
@@ -250,7 +214,7 @@ class ChatActivity : AppCompatActivity() {
 
         // Send messages when the send button is clicked
         sendButton.setOnClickListener {
-            utils.showToast("check",this@ChatActivity, )
+            utils.showToast("check",this@ChatActivity )
             val message = messageBox.text.toString()
             val messageObject = Message(message, senderUid)
             // add message object in sender room then in receiver room

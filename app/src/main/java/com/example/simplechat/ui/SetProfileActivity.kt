@@ -54,13 +54,15 @@ class SetProfileActivity : AppCompatActivity() {
             if (uri != null) {
                 // You have the selected image URI, now upload it to storage and Firestore
                 selectedImageUri = uri
-                uploadProfilePicture()
+                uploadProfilePicture(selectedImageUri)
             }
         }
         // Set a click listener for the Send Photo button
         btnSendPhoto.setOnClickListener {
             // Handle the image upload logic here
-            uploadProfilePicture()
+
+
+            uploadProfilePicture(selectedImageUri)
         }
 
         // Initialize permission launcher
@@ -100,7 +102,7 @@ class SetProfileActivity : AppCompatActivity() {
         getContent.launch("image/*")
     }
 
-    private fun uploadProfilePicture() {
+    private fun uploadProfilePicture(selectedImageUri: Uri) {
         // Implement the code to upload the image to Firebase Storage
         // After successful upload, get the download URL
         // Update the user's profile with the image URL in Firestore
