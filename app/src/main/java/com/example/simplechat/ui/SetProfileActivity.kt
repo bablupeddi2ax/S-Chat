@@ -83,18 +83,19 @@ class SetProfileActivity : AppCompatActivity() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+
+
     private fun checkAndRequestPermission() {
         if (ContextCompat.checkSelfPermission(
                 this,
-                Manifest.permission.READ_MEDIA_IMAGES
+                Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             // Permission is already granted, proceed with opening the gallery
             openGallery()
         } else {
             // Permission is not granted, request it
-            requestPermissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+            requestPermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
         }
     }
 

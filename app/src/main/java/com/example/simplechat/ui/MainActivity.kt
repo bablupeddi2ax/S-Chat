@@ -224,6 +224,9 @@ class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
             utils.moveTo(this@MainActivity, SearchUsers::class.java)
             return true
         }
+//        if(item.itemId==R.id.rooms){
+//            utils.moveTo(this@MainActivity,Rooms::class.java)
+//        }
         if(item.itemId==R.id.profile){
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {

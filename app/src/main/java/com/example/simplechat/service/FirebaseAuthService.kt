@@ -1,4 +1,4 @@
-//@file:JvmName("FirebaseAuthService")
+@file:JvmName("FirebaseAuthService")
 
 package com.example.simplechat.service
 

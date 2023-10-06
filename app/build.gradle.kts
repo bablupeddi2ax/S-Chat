@@ -54,6 +54,7 @@ dependencies {
     //test try
 
     implementation ("com.squareup.picasso:picasso:2.71828")
+    implementation ("com.firebaseui:firebase-ui-firestore:8.0.0")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

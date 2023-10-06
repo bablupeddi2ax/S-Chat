@@ -12,39 +12,45 @@ import com.example.simplechat.R
 import com.example.simplechat.models.User
 import com.example.simplechat.ui.MainActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
-    // Inside onNewToken method
+
     override fun onNewToken(token: String) {
         super.onNewToken(token)
 
-        // Get the current user's UID or any identifier
-        val userId = FirebaseAuth.getInstance().currentUser?.uid// Retrieve the user's UID or identifier
+        // Get the current user's UID or identifier
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-        // Define a reference to the Firebase Realtime Database
-        val database = FirebaseDatabase.getInstance()
+        if (userId != null) {
+            // Define a reference to the Firebase Realtime Database
+            val database = FirebaseDatabase.getInstance()
 
-        // Create a reference to where you want to store the token (e.g., under "users" node)
-        val userTokenRef = database.getReference("users").child(userId.toString()).child("fcmToken")
+            // Create a reference to where you want to store the token (e.g., under "users" node)
+            val userTokenRef = database.getReference("users").child(userId).child("fcmToken")
 
-        // Set the FCM token as the value
-        userTokenRef.setValue(token)
-            .addOnSuccessListener {
-                // Token successfully stored in the database
-                Log.i("fcmTokeReset","resetSuccessful")
-            }
-            .addOnFailureListener { e ->
-                // Handle any errors
-                Log.i("fcmTokeReset","resetFailure")
-            }
+            // Set the FCM token as the value
+            userTokenRef.setValue(token)
+                .addOnSuccessListener {
+                    Log.i("","")
+                }
+                .addOnFailureListener { e ->
+                    // Handle any errors, such as network issues or database write failures
+                    // You can log an error message or take appropriate action
+                }
+        }
     }
 
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        // Handle incoming message here
+        val title = remoteMessage.notification?.title
+        val body = remoteMessage.notification?.body
+
+        // You can customize the notification's behavior here
+        sendNotification(title, body)
+    }
 
     private fun sendNotification(title: String?, messageBody: String?) {
         val intent = Intent(this, MainActivity::class.java)

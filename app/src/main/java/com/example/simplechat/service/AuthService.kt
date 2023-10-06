@@ -1,4 +1,4 @@
-//@file:JvmName("AuthService")
+@file:JvmName("AuthService")
 package com.example.simplechat.service
 
 
