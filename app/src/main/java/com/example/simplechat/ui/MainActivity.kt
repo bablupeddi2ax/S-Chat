@@ -41,7 +41,6 @@ import com.google.firebase.storage.UploadTask
 import android.Manifest
 
 class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
-
     private lateinit var userRecyclerView: RecyclerView
     private lateinit var userList: ArrayList<User>
     private lateinit var adapter: UserAdapter
