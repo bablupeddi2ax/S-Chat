@@ -20,7 +20,28 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-
+/**
+ * Features:
+ *   Snap Activity:
+ *   - Allows users to take a snapshot or select an image.
+ *   - Uploads the selected image to Firebase Storage.
+ *   - Creates `Message` objects for sender and receiver with image URLs and captions.
+ *   - Stores the `Message` objects in Firebase Realtime Database.
+ *
+ *   Permission Handling:
+ *   - Requests and checks for the 'READ_EXTERNAL_STORAGE' permission to access the gallery.
+ *
+ *   Firebase Integration:
+ *   - Utilizes Firebase components, including Firebase Authentication, Realtime Database, and Storage.
+ *
+ *   Image Upload:
+ *   - Uploads the selected image to Firebase Storage and gets the download URL.
+ *   - Creates `Message` objects with image URLs and captions.
+ *   - Stores the `Message` objects in Firebase Realtime Database.
+ *
+ *   Code Organization:
+ *   - Organizes code into functions for clarity and readability.
+ **/
 class SnapActivity : AppCompatActivity() {
     private lateinit var edtCaption: EditText
     private lateinit var imgSelect: ImageView

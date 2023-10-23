@@ -24,7 +24,28 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
-
+/**
+ * Features:
+ *   Set User Status:
+ *   - Allows users to set their status by choosing an image and entering a message.
+ *   - Uploads the selected image to Firebase Storage.
+ *   - Creates a `Status` object with the download URL and message.
+ *   - Stores the `Status` object in Firestore.
+ *
+ *   Permission Handling:
+ *   - Requests and checks for the 'READ_MEDIA_IMAGES' permission to access the gallery.
+ *
+ *   Firebase Integration:
+ *   - Utilizes Firebase components, including Firebase Authentication, Firestore, and Storage.
+ *
+ *   Image Upload:
+ *   - Uploads the selected image to Firebase Storage and gets the download URL.
+ *   - Creates a `Status` object with the download URL and message.
+ *   - Stores the `Status` object in Firestore.
+ *
+ *   Code Organization:
+ *   - Organizes code into functions for clarity and readability.
+ **/
 class SetStatus : AppCompatActivity() {
     private lateinit var edtStatusText: EditText
     private lateinit var imgStatusImage: ImageView

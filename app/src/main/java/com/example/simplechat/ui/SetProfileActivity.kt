@@ -22,7 +22,26 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-
+/**
+ * Features:
+ *   Set Profile Picture:
+ *   - Allows users to select a profile picture from the gallery.
+ *   - Uploads the selected image to Firebase Storage.
+ *   - Updates the user's profile in Firestore with the image URL.
+ *
+ *   Permission Handling:
+ *   - Requests and checks for the 'READ_MEDIA_IMAGES' permission to access the gallery.
+ *
+ *   Firebase Integration:
+ *   - Utilizes Firebase components, including Firebase Authentication, Firestore, and Storage.
+ *
+ *   Image Upload:
+ *   - Uploads the selected image to Firebase Storage and gets the download URL.
+ *   - Updates the user's Firestore document with the image URL.
+ *
+ *   Code Organization:
+ *   - Organizes code into functions for clarity and readability.
+ **/
 class SetProfileActivity : AppCompatActivity() {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var getContent: ActivityResultLauncher<String>

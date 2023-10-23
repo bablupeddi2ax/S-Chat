@@ -9,6 +9,7 @@ import com.google.firebase.firestore.ktx.persistentCacheSettings
 import com.google.firebase.ktx.Firebase
 
 object FirebaseHelper {
+
     val database = FirebaseDatabase.getInstance().apply {
         setPersistenceEnabled(true)
     }

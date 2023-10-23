@@ -18,7 +18,25 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-
+/**
+ * Features:
+ *   StatusList Activity:
+ *   - Displays a list of user statuses retrieved from Firebase Firestore.
+ *   - Allows users to add new statuses by clicking the FloatingActionButton.
+ *
+ *   Firebase Integration:
+ *   - Utilizes Firebase components, including Firebase Authentication, Firestore, and Realtime Database.
+ *
+ *   Status Retrieval:
+ *   - Fetches user statuses from Firebase Firestore and displays them in a RecyclerView.
+ *   - Updates the status list when new statuses are added.
+ *
+ *   User Interaction:
+ *   - Provides a user-friendly interface to view and interact with statuses.
+ *
+ *   Code Organization:
+ *   - Well-structured code with clear functions and event handling.
+ **/
 class StatusList : AppCompatActivity() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var mAuth:FirebaseAuth

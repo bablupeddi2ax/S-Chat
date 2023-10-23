@@ -19,6 +19,24 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
+/**
+ * Features:
+ *   User Search Functionality:
+ *   - Allows users to search for other users using text input.
+ *   - Retrieves a list of users from Firebase Realtime Database and filters based on the search query.
+ *   - Displays search results in a RecyclerView using a custom adapter.
+ *
+ *   Firebase Integration:
+ *   - Initializes Firebase components, including Firebase Authentication and Realtime Database.
+ *   - Retrieves user data from the Realtime Database.
+ *
+ *   Realtime Filtering:
+ *   - Uses a TextWatcher to listen for changes in the search input field and dynamically filters the user list.
+ *
+ *   Code Organization:
+ *   - Organizes code into functions for clarity and readability.
+ *   - Utilizes a custom adapter (UserAdapter) to display user search results.
+ **/
 class SearchUsers : AppCompatActivity() {
     private lateinit var mRef: DatabaseReference
     private lateinit var mAuth: FirebaseAuth
