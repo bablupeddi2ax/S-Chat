@@ -1,4 +1,4 @@
-@file:JvmName("DatabaseService")
+//@file:JvmName("DatabaseService")
 package com.example.simplechat.service
 
 interface DatabaseService {

@@ -12,6 +12,8 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="5dp"
         android:layout_marginTop="5dp"
+
+        android:background="@drawable/btn_background"
         >
 
         <ImageView
@@ -23,17 +25,30 @@
             android:text="This is sent Message" />
 
         <TextView
-            android:text="caption"
-            android:textSize="25sp"
             android:id="@+id/captionSent"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
+            android:layout_width="251dp"
+            android:layout_height="47dp"
             android:layout_below="@+id/imgSent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="2dp"
-            android:layout_marginEnd="1dp"
-            android:layout_marginBottom="-2dp" />
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="31dp"
+            android:text="caption"
+            android:textSize="25sp" />
+
+        <ImageView
+            android:id="@+id/isImageSent"
+            android:layout_width="41dp"
+            android:layout_height="33dp"
+            android:layout_alignStart="@+id/captionSent"
+            android:layout_alignBottom="@id/captionSent"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="212dp"
+            android:layout_marginEnd="-2dp"
+            android:layout_marginBottom="-3dp"
+            android:src="@drawable/baseline_keyboard_arrow_right_24" />
+
     </RelativeLayout>
 </RelativeLayout>
 

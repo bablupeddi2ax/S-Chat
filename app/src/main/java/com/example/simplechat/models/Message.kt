@@ -7,7 +7,6 @@ class Message {
 
     var imageUrl: String? = null
 
-
 constructor()
     constructor(message: String?, senderUid: String?, imageUrl: String? = "") {
         this.message = message
@@ -15,4 +14,5 @@ constructor()
 
         this.imageUrl = imageUrl
     }
+
 }

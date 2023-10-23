@@ -7,14 +7,15 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.simplechat.R
+import com.example.simplechat.service.FirebaseAuthService
 import com.example.simplechat.utils.Utils
 import com.example.simplechat.utils.validateEmail
 import com.example.simplechat.utils.validateInputs
 import com.example.simplechat.utils.validatePassword
 import com.google.firebase.auth.FirebaseAuth
+import com.example.simplechat.utils.FirebaseHelper
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.example.simplechat.service.FirebaseAuthService
+
 /**
  * Features:
  *     User Registration with Firebase Authentication:
@@ -41,7 +42,7 @@ class Signup : AppCompatActivity() {
     private lateinit var edtPassword: EditText
     private lateinit var btnSignup: Button
     private lateinit var mAuth: FirebaseAuth
-    private lateinit var mDbRef:DatabaseReference
+    private lateinit var mDbRef: DatabaseReference
     private lateinit var utils: Utils
     private lateinit var mAuthService: FirebaseAuthService
 
@@ -60,7 +61,7 @@ class Signup : AppCompatActivity() {
 
         //initialize auth and database reference
         mAuth = FirebaseAuth.getInstance()
-        mDbRef = FirebaseDatabase.getInstance().reference
+        mDbRef = FirebaseHelper.getDatabaseReference()
 
         mAuthService = FirebaseAuthService()
 
@@ -103,83 +104,3 @@ class Signup : AppCompatActivity() {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-private fun signup(name:String,email: String, password: String) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-
-                    // add user to db if user is created successfully
-                    addUserToDb(name,email,mAuth.currentUser?.uid!!)
-
-                    // navigate to MainActivity
-                    utils.moveTo(this@Signup, MainActivity::class.java)
-
-                    //finish the activity so that user accidentally will not be able to redirected to signup again
-                    finish()
-
-                } else {
-                    // If sign in fails, log an error message
-                    Log.i("signup", "signup_failure$email$password")
-                    Toast.makeText(this@Signup, "some error occurred", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
-
-    // Adds user data to the Firebase Realtime Database
-    private fun addUserToDb(name: String, email: String, uid: String) {
-
-        //changed TODO check again for errors
-        val userObject = User(name,email,uid,null)
-        mDbRef.child("users").child(uid).setValue(User(name,email,uid,null))
-        val user = FirebaseAuth.getInstance().currentUser
-        var token = ""
-        FirebaseMessaging.getInstance().token.addOnSuccessListener {
-            if (it.isNotBlank() && !it.isNullOrBlank()) {
-                // Store the FCM token in the database
-                token =it
-                mDbRef.child("users").child(user!!.uid).child("fcmToken").setValue(token)
-            }
-        }
-        if (user != null && token!="") {
-            val userId = user.uid
-            // Store the FCM token in your database under the user's ID
-            FirebaseDatabase.getInstance().reference.child("users").child(userId).child("fcmToken").setValue(token)
-        }
-    }
- */

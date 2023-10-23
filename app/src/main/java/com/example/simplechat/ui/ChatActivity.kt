@@ -13,6 +13,7 @@ import com.example.simplechat.R
 import com.example.simplechat.adapters.MessageAdapter
 import com.example.simplechat.models.Message
 import com.example.simplechat.models.User
+import com.example.simplechat.utils.FirebaseHelper
 import com.example.simplechat.utils.Utils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -80,7 +81,8 @@ class ChatActivity : AppCompatActivity() {
         var fcmToken = ""
         val receiverUid = intent.getStringExtra("uid").toString()
 
-        val usersRef = FirebaseDatabase.getInstance().getReference("users")
+
+        val usersRef = FirebaseHelper.getUserReference()
         val query = usersRef.orderByKey().equalTo(receiverUid)
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -165,10 +167,12 @@ class ChatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_chat)
         // Check if the activity was launched from a notification
         // Retrieve user details and initialize Firebase references
+
          val name = intent.getStringExtra("name")
          receiverUid = intent.getStringExtra("uid").toString()
          senderUid = FirebaseAuth.getInstance().currentUser?.uid.toString()
-        mRef = FirebaseDatabase.getInstance().reference
+
+        mRef = FirebaseHelper.getDatabaseReference()
 
         // initialize senderRoom and receiverRoom be the combination of receiverUid and senderUid
 
@@ -200,6 +204,13 @@ class ChatActivity : AppCompatActivity() {
                     messageList.clear()
                     for (postSnapshot in snapshot.children) {
                         val message = postSnapshot.getValue(Message::class.java)
+                        if(message?.senderUid!=FirebaseAuth.getInstance().currentUser?.uid.toString()){
+                            mRef.child("chats").child(receiverRoom!!).child("messages")
+                                .child(snapshot.key!!) // Use the message key
+                                .child("status")
+                                .setValue("read")
+                        }
+
                         messageList.add(message!!)
                     }
                     //notify data set changed
@@ -229,6 +240,7 @@ class ChatActivity : AppCompatActivity() {
                         }
                 }
             //scroll to show the latest message
+
             chatRecyclerView.scrollToPosition(messageList.size-1 )
             //clear message box
             messageBox.setText("")
@@ -256,7 +268,9 @@ class ChatActivity : AppCompatActivity() {
                             messageList.clear()
                             for (postSnapshot in snapshot.children) {
                                 val message = postSnapshot.getValue(Message::class.java)
-                                messageList.add(message!!)
+                                if (message?.message != null && message.senderUid != null) {
+                                    messageList.add(message)
+                                }
                             }
                             //notify data set changed
                             messageAdapter.notifyDataSetChanged()

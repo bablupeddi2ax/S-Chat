@@ -23,6 +23,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simplechat.R
+import com.example.simplechat.models.Status
 import com.example.simplechat.utils.Utils
 import com.example.simplechat.models.User
 import com.google.android.gms.tasks.OnCompleteListener
@@ -30,7 +31,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -38,7 +38,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
-import android.Manifest
+import com.example.simplechat.utils.FirebaseHelper
 
 class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
     private lateinit var userRecyclerView: RecyclerView
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
         if (notificationData != null) {
             // Handle the data from the notification here
             mAuth = FirebaseAuth.getInstance()
-            val mdbRef = FirebaseDatabase.getInstance().getReference("users")
+            val mdbRef = FirebaseHelper.getUserReference()
             val userId = intent.extras?.getString("userId")
             mdbRef.addValueEventListener(object: ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
         }
 
         mAuth = FirebaseAuth.getInstance()
-        mDbRef = FirebaseDatabase.getInstance().getReference("users")
+        mDbRef = FirebaseHelper.getUserReference()
         firestore = Firebase.firestore
 
         val currentUserUID = mAuth.currentUser?.uid!!
@@ -223,9 +223,10 @@ class MainActivity : AppCompatActivity(), ActivityResultCallback<Boolean> {
             utils.moveTo(this@MainActivity, SearchUsers::class.java)
             return true
         }
-//        if(item.itemId==R.id.rooms){
-//            utils.moveTo(this@MainActivity,Rooms::class.java)
-//        }
+        if(item.itemId==R.id.updates){
+            utils.moveTo(this@MainActivity,StatusList::class.java)
+            return true
+        }
         if(item.itemId==R.id.profile){
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {

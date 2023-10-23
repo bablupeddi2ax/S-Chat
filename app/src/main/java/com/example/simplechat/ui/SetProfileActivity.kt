@@ -33,6 +33,7 @@ class SetProfileActivity : AppCompatActivity() {
     private lateinit var btnSelectPhoto: Button
     private lateinit var btnSendPhoto: Button
 
+
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,17 +86,18 @@ class SetProfileActivity : AppCompatActivity() {
 
 
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun checkAndRequestPermission() {
         if (ContextCompat.checkSelfPermission(
                 this,
-                Manifest.permission.READ_EXTERNAL_STORAGE
+                Manifest.permission.READ_MEDIA_IMAGES
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             // Permission is already granted, proceed with opening the gallery
             openGallery()
         } else {
             // Permission is not granted, request it
-            requestPermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+            requestPermissionLauncher.launch(android.Manifest.permission.READ_MEDIA_IMAGES)
         }
     }
 

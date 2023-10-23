@@ -1,9 +1,10 @@
 @file:JvmName("FirebaseDatabaseService")
 package com.example.simplechat.service
 import com.example.simplechat.models.User
+import com.example.simplechat.utils.FirebaseHelper
 import com.google.firebase.database.FirebaseDatabase
 class FirebaseDatabaseService : DatabaseService {
-    private val dbRef = FirebaseDatabase.getInstance().getReference("users")
+    private val dbRef = FirebaseHelper.getDatabaseReference().child("users")
     override fun addUserToDatabase(
         name: String,
         email: String,

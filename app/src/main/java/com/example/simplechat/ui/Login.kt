@@ -12,11 +12,11 @@ import com.example.simplechat.R
 import com.example.simplechat.utils.Utils
 import com.example.simplechat.utils.ValidationResult
 import com.example.simplechat.models.LoginViewModel
+import com.example.simplechat.utils.FirebaseHelper
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
 import java.math.BigInteger
@@ -53,7 +53,7 @@ class Login : AppCompatActivity() {
         FirebaseApp.initializeApp(this)
         FirebaseMessaging.getInstance().isAutoInitEnabled = true
         FirebaseAuth.getInstance()
-//        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+
         if(FirebaseAuth.getInstance().currentUser!=null){
            utils.moveTo(this@Login,MainActivity::class.java)
 
@@ -67,7 +67,9 @@ class Login : AppCompatActivity() {
         btnLogin = findViewById(R.id.btn_login)
         btnSignup = findViewById(R.id.btn_signup)
         btnAnonymousLogin = findViewById(R.id.btnAnonymousLogin)
+
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+
         viewModel.loginResult.observe(this) { result ->
             when (result) {
                 is ValidationResult.Success -> {
@@ -122,7 +124,7 @@ class Login : AppCompatActivity() {
 
         if (user != null) {
             val userId = user.uid
-            val databaseRef = FirebaseDatabase.getInstance().reference
+            val databaseRef = FirebaseHelper.getDatabaseReference();
 
             // Check if the user has an FCM token in the database
             databaseRef.child("users").child(userId).child("fcmToken").addListenerForSingleValueEvent(
